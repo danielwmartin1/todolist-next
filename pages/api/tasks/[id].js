@@ -21,9 +21,9 @@ export default async function handler(req, res) {
       break;
     case "DELETE":
       try {
-        const deletedTask = await Task.findByIdAndDelete(id);
+        const deletedTask = await Task.findByIdAndUpdate(id, { deletedAt: new Date() }, { new: true });
         if (!deletedTask) return res.status(404).json({ success: false });
-        res.status(200).json({ success: true, data: {} });
+        res.status(200).json({ success: true, data: deletedTask });
       } catch (error) {
         res.status(400).json({ success: false, error: error.message });
       }

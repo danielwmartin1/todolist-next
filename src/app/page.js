@@ -14,31 +14,47 @@ export default function Home() {
   }, []);
 
   const fetchTasks = async () => {
-    const response = await axios.get("/api/tasks");
-    const sortedTasks = response.data.data.sort((a, b) => {
-      if (a.completed === b.completed) {
-        return new Date(b.updatedAt) - new Date(a.updatedAt);
-      }
-      return a.completed - b.completed;
-    });
-    setTasks(sortedTasks);
+    try {
+      const response = await axios.get("/api/tasks");
+      const sortedTasks = response.data.data.sort((a, b) => {
+        if (a.completed === b.completed) {
+          return new Date(b.updatedAt) - new Date(a.updatedAt);
+        }
+        return a.completed - b.completed;
+      });
+      setTasks(sortedTasks);
+    } catch (error) {
+      console.error("Failed to fetch tasks:", error);
+    }
   };
 
   const addTask = async () => {
     if (!newTask) return;
-    const response = await axios.post("/api/tasks", { title: newTask });
-    setTasks([response.data.data, ...tasks]);
-    setNewTask("");
+    try {
+      const response = await axios.post("/api/tasks", { title: newTask });
+      setTasks([response.data.data, ...tasks]);
+      setNewTask("");
+    } catch (error) {
+      console.error("Failed to add task:", error);
+    }
   };
 
   const toggleTask = async (id, completed) => {
-    await axios.put(`/api/tasks/${id}`, { completed: !completed });
-    fetchTasks();
+    try {
+      await axios.put(`/api/tasks/${id}`, { completed: !completed, completedAt: !completed ? new Date() : null });
+      fetchTasks();
+    } catch (error) {
+      console.error("Failed to toggle task:", error);
+    }
   };
 
   const deleteTask = async (id) => {
-    await axios.delete(`/api/tasks/${id}`);
-    fetchTasks();
+    try {
+      await axios.delete(`/api/tasks/${id}`);
+      fetchTasks();
+    } catch (error) {
+      console.error("Failed to delete task:", error);
+    }
   };
 
   const startEditing = (task) => {
@@ -56,9 +72,13 @@ export default function Home() {
       cancelEditing();
       return;
     }
-    await axios.put(`/api/tasks/${id}`, { title: editingTaskTitle });
-    fetchTasks();
-    cancelEditing();
+    try {
+      await axios.put(`/api/tasks/${id}`, { title: editingTaskTitle });
+      fetchTasks();
+      cancelEditing();
+    } catch (error) {
+      console.error("Failed to update task:", error);
+    }
   };
 
   return (
@@ -113,6 +133,11 @@ export default function Home() {
                 >
                   {task.title}
                 </span>
+                <div className="text-sm text-gray-500">
+                  <div>Created: {new Date(task.createdAt).toLocaleString()}</div>
+                  <div>Updated: {new Date(task.updatedAt).toLocaleString()}</div>
+                  {task.completedAt && <div>Completed: {new Date(task.completedAt).toLocaleString()}</div>}
+                </div>
                 <button
                   className="bg-yellow-500 text-white px-4 py-2 mr-2"
                   onClick={() => startEditing(task)}

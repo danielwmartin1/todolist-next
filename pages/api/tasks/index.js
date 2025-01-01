@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        const tasks = await Task.find({});
+        const tasks = await Task.find({ deletedAt: { $exists: false } });
         res.status(200).json({ success: true, data: tasks });
       } catch (error) {
         res.status(500).json({ success: false, error: error.message });
