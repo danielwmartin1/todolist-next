@@ -1,35 +1,20 @@
 import mongoose from "mongoose";
 
-
 const connectDB = async () => {
+  if (mongoose.connection.readyState >= 1) return;
 
-  if (mongoose.connections[0].readyState) {
-
-    return;
-
+  const mongoUri = process.env.MONGODB_URI;
+  if (!mongoUri) {
+    console.error("MONGODB_URI is not defined in environment variables");
+    throw new Error("MONGODB_URI is not defined in environment variables");
   }
 
-  const mongoURI = process.env.MONGODB_URI;
+  console.log("Connecting to MongoDB with URI:", mongoUri);
 
-  if (!mongoURI) {
-    throw new Error('MONGO_URI is not defined in environment variables');
-  }
-
-  if (!mongoURI.startsWith('mongodb://') && !mongoURI.startsWith('mongodb+srv://')) {
-
-    throw new Error('Invalid MongoDB connection string');
-
-  }
-
-  await mongoose.connect(mongoURI, {
-
+  return mongoose.connect(mongoUri, {
     useNewUrlParser: true,
-
     useUnifiedTopology: true,
-
   });
-
 };
-
 
 export default connectDB;
