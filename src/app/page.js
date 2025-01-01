@@ -21,13 +21,11 @@ export default function Home() {
   const fetchTasks = async () => {
     try {
       const response = await axios.get("/api/tasks");
-      const sortedTasks = response.data.data.sort((a, b) => {
-        if (a.completed === b.completed) {
-          return new Date(b.updatedAt) - new Date(a.updatedAt);
-        }
-        return a.completed - b.completed;
-      });
-      setTasks(sortedTasks);
+      const fetchedTasks = response.data.tasks || [];
+      if (!Array.isArray(fetchedTasks)) {
+        throw new Error("Fetched tasks is not an array");
+      }
+      setTasks(fetchedTasks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
     } catch (error) {
       console.error("Failed to fetch tasks:", error);
     }
@@ -37,7 +35,7 @@ export default function Home() {
     if (!newTask) return;
     try {
       const response = await axios.post("/api/tasks", { title: newTask });
-      setTasks([response.data.data, ...tasks]);
+      setTasks([...tasks, response.data.task]);
       setNewTask("");
     } catch (error) {
       console.error("Failed to add task:", error);
@@ -46,8 +44,8 @@ export default function Home() {
 
   const toggleTask = async (id, completed) => {
     try {
-      await axios.put(`/api/tasks/${id}`, { completed: !completed, completedAt: !completed ? new Date() : null });
-      fetchTasks();
+      const response = await axios.patch(`/api/tasks/${id}`, { completed });
+      setTasks(tasks.map(task => task._id === id ? response.data.task : task));
     } catch (error) {
       console.error("Failed to toggle task:", error);
     }
