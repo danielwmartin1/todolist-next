@@ -96,9 +96,11 @@ export default function Home() {
     }).format(new Date(date));
   };
 
-  const handleKeyDown = (e, action) => {
+  const handleKeyDown = (e, action, cancelAction) => {
     if (e.key === "Enter") {
       action();
+    } else if (e.key === "Escape" && cancelAction) {
+      cancelAction();
     }
   };
 
@@ -113,7 +115,7 @@ export default function Home() {
             placeholder="New Task"
             value={newTask}
             onChange={(e) => setNewTask(e.target.value)}
-            onKeyDown={(e) => handleKeyDown(e, addTask)}
+            onKeyDown={(e) => handleKeyDown(e, addTask, () => setNewTask(""))}
             autoFocus
           />
           <button
@@ -140,7 +142,7 @@ export default function Home() {
                       className="border p-2 mr-2 w-full rounded text-black"
                       value={editingTaskTitle}
                       onChange={(e) => setEditingTaskTitle(e.target.value)}
-                      onKeyDown={(e) => handleKeyDown(e, () => updateTask(task._id))}
+                      onKeyDown={(e) => handleKeyDown(e, () => updateTask(task._id), cancelEditing)}
                       autoFocus
                     />
                   ) : (
