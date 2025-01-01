@@ -110,7 +110,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <Header />
       <main className="flex-grow container mx-auto p-4 flex flex-col items-center justify-center">
-        <div className="mt-8 pt-0 flex flex-col sm:flex-row items-center justify-center">
+        <div className="mb-20 mt-2 pt-0 flex flex-col sm:flex-row items-center justify-center">
           <input
             type="text"
             className="border p-2 mb-2 sm:mb-0 sm:mr-2 rounded text-black w-full sm:w-auto"
@@ -121,7 +121,7 @@ export default function Home() {
             autoFocus
           />
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded sm:w-auto"
+            className="btn bg-blue-500 text-white px-4 py-2 rounded sm:w-auto"
             onClick={addTask}
           >
             Add Task
@@ -130,8 +130,8 @@ export default function Home() {
         <ul className="text-center w-full">
           {tasks.map((task, index) => (
             <div key={task._id} className="w-full">
-              <li className="grid grid-cols-1 sm:grid-cols-3 gap-4 justify-center text-left items-center mb-2">
-                <div className="flex items-center">
+              <li className="task-item flex justify-center text-left items-center">
+                <div className="addTask flex items-center">
                   <input
                     type="checkbox"
                     checked={task.completed}
@@ -162,13 +162,13 @@ export default function Home() {
                   {editingTaskId === task._id ? (
                     <div className="space-x-2 flex justify-end items-center">
                       <button
-                        className="bg-green-500 text-white px-4 py-2 rounded"
+                        className="btn bg-green-500 text-white px-4 py-2 rounded"
                         onClick={() => updateTask(task._id)}
                       >
                         Save
                       </button>
                       <button
-                        className="bg-gray-500 text-white px-4 py-2 rounded"
+                        className="btn bg-gray-500 text-white px-4 py-2 rounded"
                         onClick={cancelEditing}
                       >
                         Cancel
@@ -177,13 +177,13 @@ export default function Home() {
                   ) : (
                     <div className="space-x-2 flex justify-end items-center">
                       <button
-                        className="bg-yellow-500 text-white px-4 py-2 rounded"
+                        className="btn bg-yellow-500 text-white px-4 py-2 rounded"
                         onClick={() => startEditing(task)}
                       >
                         Edit
                       </button>
                       <button
-                        className="bg-red-500 text-white px-4 py-2 rounded"
+                        className="btn bg-red-500 text-white px-4 py-2 rounded"
                         onClick={() => deleteTask(task._id)}
                       >
                         Delete
