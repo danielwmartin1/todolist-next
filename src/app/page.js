@@ -12,7 +12,7 @@ export default function Home() {
   const [newTask, setNewTask] = useState("");
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editingTaskTitle, setEditingTaskTitle] = useState("");
-  const [timeZone, setTimeZone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone);
+  const [timeZone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone);
 
   useEffect(() => {
     fetchTasks();
@@ -56,7 +56,7 @@ export default function Home() {
   const deleteTask = async (id) => {
     try {
       await axios.delete(`/api/tasks/${id}`);
-      fetchTasks();
+      setTasks(tasks.filter(task => task._id !== id));
     } catch (error) {
       console.error("Failed to delete task:", error);
     }
