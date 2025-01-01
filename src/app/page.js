@@ -110,7 +110,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <Header />
       <main className="flex-grow container mx-auto p-4 flex flex-col items-center justify-center">
-        <div className="mt-0 mb-20 pt-0 pb-8 flex flex-col sm:flex-row items-center justify-center">
+        <div className="mt-8 pt-0 flex flex-col sm:flex-row items-center justify-center">
           <input
             type="text"
             className="border p-2 mb-2 sm:mb-0 sm:mr-2 rounded text-black w-full sm:w-auto"
@@ -153,7 +153,7 @@ export default function Home() {
                     </span>
                   )}
                 </div>
-                <div className="text-sm text-gray-500 flex flex-col items-start">
+                <div className="text-sm text-gray-500 flex flex-col items-start m-16">
                   <div>Created: {formatDate(task.createdAt)} ({timeZone})</div>
                   <div>Updated: {formatDate(task.updatedAt)} ({timeZone})</div>
                   {task.completedAt && <div>Completed: {formatDate(task.completedAt)} ({timeZone})</div>}
