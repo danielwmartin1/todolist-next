@@ -5,6 +5,8 @@ import axios from "axios";
 import Header from "./Header";
 import Footer from "./Footer";
 
+import './styles.css';
+
 export default function Home() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
@@ -108,10 +110,10 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <Header />
       <main className="flex-grow container mx-auto p-4 flex flex-col items-center justify-center">
-        <div className="mt-0 mb-20 pt-0 pb-8 flex items-center justify-center">
+        <div className="mt-0 mb-20 pt-0 pb-8 flex flex-col sm:flex-row items-center justify-center">
           <input
             type="text"
-            className="border p-2 mr-2 rounded text-black"
+            className="border p-2 mb-2 sm:mb-0 sm:mr-2 rounded text-black w-full sm:w-auto"
             placeholder="New Task"
             value={newTask}
             onChange={(e) => setNewTask(e.target.value)}
@@ -119,16 +121,16 @@ export default function Home() {
             autoFocus
           />
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+            className="bg-blue-500 text-white px-4 py-2 rounded sm:w-auto"
             onClick={addTask}
           >
             Add Task
           </button>
         </div>
-        <ul className="text-center ">
+        <ul className="text-center w-full">
           {tasks.map((task, index) => (
-            <div key={task._id}>
-              <li className="grid grid-cols-3 gap-4 justify-center text-left items-center mb-2">
+            <div key={task._id} className="w-full">
+              <li className="grid grid-cols-1 sm:grid-cols-3 gap-4 justify-center text-left items-center mb-2">
                 <div className="flex items-center">
                   <input
                     type="checkbox"
@@ -146,7 +148,7 @@ export default function Home() {
                       autoFocus
                     />
                   ) : (
-                    <span className={task.completed ? "line-through" : ""}>
+                    <span className={`text-lg ${task.completed ? "line-through" : ""}`}>
                       {task.title}
                     </span>
                   )}
@@ -158,7 +160,7 @@ export default function Home() {
                 </div>
                 <div className="flex justify-end items-center space-x-2">
                   {editingTaskId === task._id ? (
-                    <>
+                    <div className="space-x-2 flex justify-end items-center">
                       <button
                         className="bg-green-500 text-white px-4 py-2 rounded"
                         onClick={() => updateTask(task._id)}
@@ -171,7 +173,7 @@ export default function Home() {
                       >
                         Cancel
                       </button>
-                    </>
+                    </div>
                   ) : (
                     <div className="space-x-2 flex justify-end items-center">
                       <button
