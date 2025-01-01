@@ -6,6 +6,8 @@ import axios from "axios";
 export default function Home() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
+  const [editingTaskId, setEditingTaskId] = useState(null);
+  const [editingTaskTitle, setEditingTaskTitle] = useState("");
 
   useEffect(() => {
     fetchTasks();
@@ -13,13 +15,19 @@ export default function Home() {
 
   const fetchTasks = async () => {
     const response = await axios.get("/api/tasks");
-    setTasks(response.data.data);
+    const sortedTasks = response.data.data.sort((a, b) => {
+      if (a.completed === b.completed) {
+        return new Date(b.updatedAt) - new Date(a.updatedAt);
+      }
+      return a.completed - b.completed;
+    });
+    setTasks(sortedTasks);
   };
 
   const addTask = async () => {
     if (!newTask) return;
     const response = await axios.post("/api/tasks", { title: newTask });
-    setTasks([...tasks, response.data.data]);
+    setTasks([response.data.data, ...tasks]);
     setNewTask("");
   };
 
@@ -31,6 +39,26 @@ export default function Home() {
   const deleteTask = async (id) => {
     await axios.delete(`/api/tasks/${id}`);
     fetchTasks();
+  };
+
+  const startEditing = (task) => {
+    setEditingTaskId(task._id);
+    setEditingTaskTitle(task.title);
+  };
+
+  const cancelEditing = () => {
+    setEditingTaskId(null);
+    setEditingTaskTitle("");
+  };
+
+  const updateTask = async (id) => {
+    if (editingTaskTitle === tasks.find(task => task._id === id).title) {
+      cancelEditing();
+      return;
+    }
+    await axios.put(`/api/tasks/${id}`, { title: editingTaskTitle });
+    fetchTasks();
+    cancelEditing();
   };
 
   return (
@@ -54,20 +82,51 @@ export default function Home() {
       <ul>
         {tasks.map((task) => (
           <li key={task._id} className="flex justify-between items-center mb-2">
-            <span
-              onClick={() => toggleTask(task._id, task.completed)}
-              className={
-                task.completed ? "line-through cursor-pointer" : "cursor-pointer"
-              }
-            >
-              {task.title}
-            </span>
-            <button
-              className="bg-red-500 text-white px-4 py-2"
-              onClick={() => deleteTask(task._id)}
-            >
-              Delete
-            </button>
+            {editingTaskId === task._id ? (
+              <>
+                <input
+                  type="text"
+                  className="border p-2 mr-2"
+                  value={editingTaskTitle}
+                  onChange={(e) => setEditingTaskTitle(e.target.value)}
+                />
+                <button
+                  className="bg-green-500 text-white px-4 py-2 mr-2"
+                  onClick={() => updateTask(task._id)}
+                >
+                  Save
+                </button>
+                <button
+                  className="bg-gray-500 text-white px-4 py-2"
+                  onClick={cancelEditing}
+                >
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <>
+                <span
+                  onClick={() => toggleTask(task._id, task.completed)}
+                  className={
+                    task.completed ? "line-through cursor-pointer" : "cursor-pointer"
+                  }
+                >
+                  {task.title}
+                </span>
+                <button
+                  className="bg-yellow-500 text-white px-4 py-2 mr-2"
+                  onClick={() => startEditing(task)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="bg-red-500 text-white px-4 py-2"
+                  onClick={() => deleteTask(task._id)}
+                >
+                  Delete
+                </button>
+              </>
+            )}
           </li>
         ))}
       </ul>
