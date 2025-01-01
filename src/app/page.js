@@ -8,6 +8,7 @@ export default function Home() {
   const [newTask, setNewTask] = useState("");
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editingTaskTitle, setEditingTaskTitle] = useState("");
+  const [timeZone, setTimeZone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone);
 
   useEffect(() => {
     fetchTasks();
@@ -81,77 +82,93 @@ export default function Home() {
     }
   };
 
+  const formatDate = (date) => {
+    return new Intl.DateTimeFormat('en-US', {
+      timeZone,
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric'
+    }).format(new Date(date));
+  };
+
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">To-Do List</h1>
-      <div className="mb-4">
+    <div className="container mx-auto p-4 text-center">
+      <div className="mb-4 flex justify-center">
         <input
           type="text"
-          className="border p-2 mr-2"
+          className="border p-2 mr-2 rounded"
           placeholder="New Task"
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
         />
         <button
-          className="bg-blue-500 text-white px-4 py-2"
+          className="bg-blue-500 text-white px-4 py-2 rounded"
           onClick={addTask}
         >
           Add Task
         </button>
       </div>
-      <ul>
+      <ul className="text-center">
         {tasks.map((task) => (
-          <li key={task._id} className="flex justify-between items-center mb-2">
-            {editingTaskId === task._id ? (
-              <>
+          <li key={task._id} className="grid grid-cols-3 gap-4 justify-center text-left items-center mb-2">
+            <div className="flex-1">
+              {editingTaskId === task._id ? (
                 <input
                   type="text"
-                  className="border p-2 mr-2"
+                  className="border p-2 mr-2 w-full rounded"
                   value={editingTaskTitle}
                   onChange={(e) => setEditingTaskTitle(e.target.value)}
                 />
-                <button
-                  className="bg-green-500 text-white px-4 py-2 mr-2"
-                  onClick={() => updateTask(task._id)}
-                >
-                  Save
-                </button>
-                <button
-                  className="bg-gray-500 text-white px-4 py-2"
-                  onClick={cancelEditing}
-                >
-                  Cancel
-                </button>
-              </>
-            ) : (
-              <>
+              ) : (
                 <span
                   onClick={() => toggleTask(task._id, task.completed)}
-                  className={
-                    task.completed ? "line-through cursor-pointer" : "cursor-pointer"
-                  }
+                  className={task.completed ? "line-through cursor-pointer" : "cursor-pointer"}
                 >
                   {task.title}
                 </span>
-                <div className="text-sm text-gray-500">
-                  <div>Created: {new Date(task.createdAt).toLocaleString()}</div>
-                  <div>Updated: {new Date(task.updatedAt).toLocaleString()}</div>
-                  {task.completedAt && <div>Completed: {new Date(task.completedAt).toLocaleString()}</div>}
+              )}
+            </div>
+            <div className="text-sm text-gray-500 flex flex-col items-center">
+              <div>Created: {formatDate(task.createdAt)} ({timeZone})</div>
+              <div>Updated: {formatDate(task.updatedAt)} ({timeZone})</div>
+              {task.completedAt && <div>Completed: {formatDate(task.completedAt)} ({timeZone})</div>}
+            </div>
+            <div className="flex justify-end items-center space-x-2">
+              {editingTaskId === task._id ? (
+                <>
+                  <button
+                    className="bg-green-500 text-white px-4 py-2 rounded"
+                    onClick={() => updateTask(task._id)}
+                  >
+                    Save
+                  </button>
+                  <button
+                    className="bg-gray-500 text-white px-4 py-2 rounded"
+                    onClick={cancelEditing}
+                  >
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <div className="space-x-2 flex justify-end items-center">
+                  <button
+                    className="bg-yellow-500 text-white px-4 py-2 rounded"
+                    onClick={() => startEditing(task)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="bg-red-500 text-white px-4 py-2 rounded"
+                    onClick={() => deleteTask(task._id)}
+                  >
+                    Delete
+                  </button>
                 </div>
-                <button
-                  className="bg-yellow-500 text-white px-4 py-2 mr-2"
-                  onClick={() => startEditing(task)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="bg-red-500 text-white px-4 py-2"
-                  onClick={() => deleteTask(task._id)}
-                >
-                  Delete
-                </button>
-              </>
-            )}
+              )}
+            </div>
           </li>
         ))}
       </ul>
