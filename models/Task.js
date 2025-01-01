@@ -5,6 +5,10 @@ const TaskSchema = new mongoose.Schema({
   completed: { type: Boolean, default: false },
   completedAt: { type: Date },
   deletedAt: { type: Date },
+  location: {
+    latitude: { type: Number },
+    longitude: { type: Number }
+  }
 }, { timestamps: true });
 
 export default mongoose.models.Task || mongoose.model("Task", TaskSchema);
