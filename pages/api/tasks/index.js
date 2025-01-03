@@ -1,4 +1,4 @@
-import connectDB from '../../../utils/db';
+import connectDB from '../../../utils/connectDB';
 import Task from '../../../models/Task';
 
 export default async function handler(req, res) {
@@ -41,15 +41,6 @@ export default async function handler(req, res) {
         res.status(200).json({ success: true, data: updatedTask });
         break;
 
-      case 'PATCH':
-        const { id: patchId } = req.query;
-        const patchedTask = await Task.findByIdAndUpdate(patchId, req.body, { new: true });
-        if (!patchedTask) {
-          return res.status(404).json({ success: false, error: "Task not found" });
-        }
-        res.status(200).json({ success: true, data: patchedTask });
-        break;
-
       case 'DELETE':
         const { id: deleteId } = req.query;
         const deletedTask = await Task.findByIdAndUpdate(deleteId, { deletedAt: new Date() }, { new: true });
@@ -60,12 +51,11 @@ export default async function handler(req, res) {
         break;
 
       default:
-        res.setHeader('Allow', ['POST', 'GET', 'PUT', 'PATCH', 'DELETE']);
+        res.setHeader('Allow', ['POST', 'GET', 'PUT', 'DELETE']);
         res.status(405).end(`Method ${method} Not Allowed`);
         break;
     }
   } catch (error) {
-    console.error('Error:', error);
-    res.status(504).json({ message: 'Server timeout, please try again later' });
+    res.status(500).json({ success: false, error: error.message });
   }
 }

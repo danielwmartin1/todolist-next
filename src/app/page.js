@@ -14,10 +14,6 @@ export default function Home() {
   const [editingTaskTitle, setEditingTaskTitle] = useState("");
   const [timeZone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone);
 
-  useEffect(() => {
-    fetchTasks();
-  }, []);
-
   const fetchTasks = async () => {
     try {
       const response = await axios.get("/api/tasks");
@@ -31,11 +27,15 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
   const addTask = async () => {
     if (!newTask) return;
     try {
-      const response = await axios.post("/api/tasks", { title: newTask });
-      setTasks([...tasks, response.data.task]);
+      await axios.post("/api/tasks", { title: newTask });
+      fetchTasks();
       setNewTask("");
     } catch (error) {
       console.error("Failed to add task:", error);
@@ -45,7 +45,10 @@ export default function Home() {
   const toggleTask = async (id, completed) => {
     try {
       const response = await axios.patch(`/api/tasks/${id}`, { completed });
-      setTasks(tasks.map(task => task._id === id ? response.data.task : task));
+      fetchTasks();
+      if (response.data.task) {
+        setTasks(tasks.map(task => task._id === id ? response.data.task : task));
+      }
     } catch (error) {
       console.error("Failed to toggle task:", error);
     }
@@ -54,6 +57,7 @@ export default function Home() {
   const deleteTask = async (id) => {
     try {
       await axios.delete(`/api/tasks/${id}`);
+      fetchTasks();
       setTasks(tasks.filter(task => task._id !== id));
     } catch (error) {
       console.error("Failed to delete task:", error);
@@ -133,7 +137,7 @@ export default function Home() {
                   <input
                     type="checkbox"
                     checked={task.completed}
-                    onChange={() => toggleTask(task._id, task.completed)}
+                    onChange={() => toggleTask(task._id, !task.completed)}
                     className="mr-2"
                   />
                   {editingTaskId === task._id ? (
