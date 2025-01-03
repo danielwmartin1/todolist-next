@@ -1,4 +1,3 @@
-import connectDB from "../../../utils/db";
 import Task from "../../../models/Task";
 
 export default async function handler(req, res) {

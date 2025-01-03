@@ -3,9 +3,6 @@ import Task from '../../../models/Task';
 
 export default async function handler(req, res) {
   const { method } = req;
-
-console.log (process.env.MONGODB_URI);
-
   try {
     await connectDB();
 
@@ -31,7 +28,6 @@ console.log (process.env.MONGODB_URI);
         break;
 
       case 'GET':
-        console.log('MONGODB_URI:', process.env.MONGODB_URI);
         const tasks = await Task.find({ deletedAt: { $exists: false } });
         res.status(200).json({ tasks });
         break;
