@@ -1,11 +1,18 @@
-// filepath: /C:/Users/danie/OneDrive/Coding/Projects/todolist-next/todolist-next/jest.config.js
 module.exports = {
-  testEnvironment: "jest-environment-jsdom",
+  testEnvironment: 'node',
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
+  testPathIgnorePatterns: ['/node_modules/'],
   transform: {
-    "^.+\\.jsx?$": "babel-jest",
-    "^.+\\.css$": "jest-css-modules-transform"
+    '^.+\\.jsx?$': 'babel-jest',
   },
-  transformIgnorePatterns: [
-    "/node_modules/(?!ansi-regex|ansi-styles|chalk)"
-  ]
+  extensionsToTreatAsEsm: ['.ts', '.tsx', '.jsx'],
+  globals: {
+    'ts-jest': {
+      useESM: true,
+    },
+  },
+  moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1',
+  },
 };
