@@ -20,6 +20,7 @@ export default function Home() {
 
   const fetchTasks = async () => {
     try {
+      console.log("MONGODB_URI:", process.env.MONGODB_URI);
       const response = await axios.get("/api/tasks");
       const fetchedTasks = response.data.tasks || [];
       if (!Array.isArray(fetchedTasks)) {
