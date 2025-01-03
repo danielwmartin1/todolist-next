@@ -1,7 +1,7 @@
 export default function Header() {
   return (
     <header className="bg-blue-500 text-cyan-100 p-4 flex text-center justify-center items-center border-b-4 border-cyan-300">
-      <h1 className="text-4xl font-bold text-yellow-300" style={{ textShadow: '2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000' }}>To-Do List App</h1>
+      <h1 className="text-4xl font-bold text-yellow-300" style={{ textShadow: '2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000' }}>Next.JS To-Do List</h1>
     </header>
   );
 }
