@@ -26,3 +26,25 @@ body {
   align-items: center;
   height: 100vh;
 }
+
+.w-full {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+li.justify-center.text-left.items-center {
+  width: 100%;
+  /* Adjust other flex properties as needed */
+}
+
+@media (max-width: 640px) {
+  .addSection {
+    height: auto;
+    padding: 20px;
+  }
+  .grid-cols-1 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0 3rem !important;
+  }
+}
