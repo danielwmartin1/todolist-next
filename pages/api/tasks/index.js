@@ -29,6 +29,7 @@ export default async function handler(req, res) {
         break;
 
       case 'GET':
+        console.log('MONGODB_URI:', process.env.MONGODB_URI);
         const tasks = await Task.find({ deletedAt: { $exists: false } });
         res.status(200).json({ tasks });
         break;
