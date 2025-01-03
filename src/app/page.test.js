@@ -1,11 +1,14 @@
 // FILE: src/app/page.test.js
-
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import axios from 'axios';
+import Home from './page';
 
 jest.mock('axios');
 
 describe('Home Component', () => {
   beforeEach(() => {
     axios.get.mockResolvedValue({ data: { tasks: [] } });
+    });
   });
 
   it('should fetch and display tasks on load', async () => {
@@ -76,8 +79,6 @@ describe('Home Component', () => {
     await waitFor(() => {
       expect(screen.getByRole('checkbox')).toBeChecked();
     });
-  });
-
 
     fireEvent.change(screen.getByPlaceholderText('New Task'), { target: { value: 'New Task' } });
     fireEvent.click(screen.getByText('Add Task'));
