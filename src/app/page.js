@@ -132,7 +132,7 @@ export default function Home() {
         <ul className="text-center w-full">
           {tasks.map((task, index) => (
             <div key={task._id} className="w-full">
-              <li className="grid grid-cols-1 sm:grid-cols-3 gap-4 justify-center text-left items-center mb-2">
+              <li className="grid grid-cols-1 sm:grid-cols-3 justify-center text-left items-center">
                 <div className="flex items-center">
                   <input
                     type="checkbox"
