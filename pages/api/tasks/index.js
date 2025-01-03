@@ -4,6 +4,8 @@ import Task from '../../../models/Task';
 export default async function handler(req, res) {
   const { method } = req;
 
+console.log (process.env.MONGODB_URI);
+
   try {
     await connectDB();
 
