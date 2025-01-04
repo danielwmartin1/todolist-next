@@ -177,7 +177,7 @@ export default function Home() {
                       </button>
                     </div>
                   ) : (
-                    <div className="space-x-2 flex justify-end items-center">
+                    <div className="space-x-2 flex justify-end items-center mx-4">
                       <button
                         className="bg-yellow-500 text-white px-4 py-2 rounded"
                         onClick={() => startEditing(task)}
