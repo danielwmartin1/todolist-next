@@ -112,7 +112,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <Header />
       <main className="flex-grow container mx-auto p-4 flex flex-col items-center justify-center">
-        <div className="mt-8 pt-0 flex flex-col sm:flex-row items-center justify-center">
+        <div className="mt-3 pt-0 flex flex-col sm:flex-row items-center justify-center">
           <input
             type="text"
             className="border p-2 mb-2 sm:mb-0 sm:mr-2 rounded text-black w-full sm:w-auto"
@@ -129,10 +129,11 @@ export default function Home() {
             Add Task
           </button>
         </div>
+        <hr id="hr" className="my-4" />
         <ul className="text-center w-full">
           {tasks.map((task, index) => (
-            <div key={task._id} className="w-full">
-              <li className="grid grid-cols-1 sm:grid-cols-3 justify-center text-left items-center">
+            <div key={task._id} className="w-full flex">
+              <li id="listItem" className="grid grid-cols-1 sm:grid-cols-3 justify-center text-left items-center">
                 <div className="flex items-center">
                   <input
                     type="checkbox"

@@ -31,6 +31,13 @@ body {
   display: grid;
 }
 
+#hr {
+  width: 100%;
+  height: 1px;
+  background-color: var(--foreground);
+  margin: 1rem 0;
+}
+
 @media (max-width: 640px) {
   .addSection {
     height: auto;
@@ -41,5 +48,13 @@ body {
   .grid-cols-1 {
     grid-template-columns: 1fr;
     margin: 0 1rem !important;
+  }
+
+  #listItem {
+    margin: 1rem !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 }
