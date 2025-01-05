@@ -21,7 +21,8 @@ export default function Home() {
       if (!Array.isArray(fetchedTasks)) {
         throw new Error("Fetched tasks is not an array");
       }
-      setTasks(fetchedTasks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+      const validTasks = fetchedTasks.filter(task => !isNaN(new Date(task.createdAt).getTime()));
+      setTasks(validTasks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
     } catch (error) {
       console.error("Failed to fetch tasks:", error);
     }
