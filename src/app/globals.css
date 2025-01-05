@@ -51,7 +51,6 @@ body {
   }
 
   #listItem {
-    margin: 1rem !important;
     display: flex;
     flex-direction: column;
     justify-content: center;
