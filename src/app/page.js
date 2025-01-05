@@ -133,7 +133,7 @@ export default function Home() {
         <hr id="hr" className="my-4" />
         <ul className="text-center w-full">
           {tasks.map((task, index) => (
-            <div key={task._id} className="w-full flex">
+            <div id="list" key={task._id} className="w-full flex">
               <li id="listItem" className="grid grid-cols-1 sm:grid-cols-3 justify-center text-left items-center">
                 <div id="listCheck" className="flex items-center">
                   <input
