@@ -7,6 +7,11 @@ export default async function handler(req, res) {
     await connectDB();
 
     switch (method) {
+      
+      case 'GET':
+        const tasks = await Task.find({ deletedAt: { $exists: false } });
+        res.status(200).json({ tasks });
+        break;
       case 'POST':
         const { title, completed, completedAt, deletedAt, location } = req.body;
 
@@ -25,11 +30,6 @@ export default async function handler(req, res) {
         await newTask.save();
 
         res.status(201).json({ message: 'Task created successfully', task: newTask });
-        break;
-
-      case 'GET':
-        const tasks = await Task.find({ deletedAt: { $exists: false } });
-        res.status(200).json({ tasks });
         break;
 
       case 'PUT':
