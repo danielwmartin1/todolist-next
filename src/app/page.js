@@ -15,7 +15,7 @@ export default function Home() {
   const [newTask, setNewTask] = useState(""); // New task input
   const [editingTaskId, setEditingTaskId] = useState(null); // ID of the task being edited
   const [editingTaskTitle, setEditingTaskTitle] = useState(""); // Title of the task being edited
-  const [timeZone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone); // User's time zone
+  const [timeZone, setTimeZone] = useState(""); // User's time zone
 
   // Fetch tasks from the server
   const fetchTasks = async () => {
@@ -35,6 +35,7 @@ export default function Home() {
   // Fetch tasks on component mount
   useEffect(() => {
     fetchTasks(); // Call fetchTasks when component mounts
+    setTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone); // Set the client's time zone
   }, []);
 
   // Add a new task
@@ -109,7 +110,8 @@ export default function Home() {
       day: 'numeric',
       hour: 'numeric',
       minute: 'numeric',
-      second: 'numeric'
+      second: 'numeric',
+      timeZoneName: 'short' // Include timezone
     }).format(new Date(date)); // Format date
   };
 

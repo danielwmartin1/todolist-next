@@ -50,14 +50,14 @@ export default function TaskItem({
             <div className="space-x-2 flex justify-end items-center">
               <button
                 onClick={() => updateTask(task._id)} // Button to save edited task
-                className="w-24 px-4 py-2 m-2 border rounded-md" // Apply consistent styling and width
+                className="w-24 px-4 py-2 m-2 border rounded-md bg-green-500 text-white" // Apply consistent styling, width, and color
                 style={{ borderRadius: "6px" }}
               >
                 Save
               </button>
               <button
                 onClick={cancelEditing} // Button to cancel editing
-                className="w-24 px-4 py-2 m-2 border rounded-md" // Apply consistent styling and width
+                className="w-24 px-4 py-2 m-2 border rounded-md bg-red-500 text-white" // Apply consistent styling, width, and color
                 style={{ borderRadius: "6px" }}
               >
                 Cancel
@@ -67,14 +67,14 @@ export default function TaskItem({
             <div className="space-x-2 flex justify-end items-center mx-4">
               <button
                 onClick={() => startEditing(task)} // Button to start editing task
-                className="w-24 px-4 py-2 m-2 border rounded-md" // Apply consistent styling and width
+                className="w-24 px-4 py-2 m-2 border rounded-md bg-purple-500 text-white" // Apply consistent styling, width, and color
                 style={{ borderRadius: "6px" }}
               >
                 Edit
               </button>
               <button
                 onClick={() => deleteTask(task._id)} // Button to delete task
-                className="w-24 px-4 py-2 m-2 border rounded-md" // Apply consistent styling and width
+                className="w-24 px-4 py-2 m-2 border rounded-md bg-yellow-500 text-white" // Apply consistent styling, width, and color
                 style={{ borderRadius: "6px" }}
               >
                 Delete
