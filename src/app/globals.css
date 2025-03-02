@@ -38,6 +38,13 @@ body {
   margin: 1rem 0;
 }
 
+#listItem {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 0 1rem;
+  border-bottom: 1px solid white;
+} 
+
 @media (max-width: 640px) {
   .addSection {
     height: auto;
