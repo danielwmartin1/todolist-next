@@ -74,7 +74,7 @@ export default function TaskItem({
               </button>
               <button
                 onClick={() => deleteTask(task._id)} // Button to delete task
-                className="w-24 px-4 py-2 m-2 border rounded-md bg-yellow-500 text-white" // Apply consistent styling, width, and color
+                className="w-24 px-4 py-2 m-2 border rounded-md bg-orange-500 text-white" // Apply consistent styling, width, and color
                 style={{ borderRadius: "6px" }}
               >
                 Delete
