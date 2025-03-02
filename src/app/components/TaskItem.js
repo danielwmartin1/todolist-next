@@ -22,12 +22,10 @@ export default function TaskItem({
             type="checkbox"
             checked={task.completed}
             onChange={() => toggleTask(task._id, !task.completed)}
-            className="mr-2"
           />
           {editingTaskId === task._id ? (
             <input
               type="text"
-              className="border p-2 mr-2 w-full rounded text-black"
               value={editingTaskTitle}
               onChange={(e) => setEditingTaskTitle(e.target.value)}
               onKeyDown={(e) => handleKeyDown(e, () => updateTask(task._id), cancelEditing)}
@@ -48,13 +46,11 @@ export default function TaskItem({
           {editingTaskId === task._id ? (
             <div className="space-x-2 flex justify-end items-center">
               <button
-                className="bg-green-500 text-white px-4 py-2 rounded"
                 onClick={() => updateTask(task._id)}
               >
                 Save
               </button>
               <button
-                className="bg-gray-500 text-white px-4 py-2 rounded"
                 onClick={cancelEditing}
               >
                 Cancel
@@ -63,13 +59,11 @@ export default function TaskItem({
           ) : (
             <div className="space-x-2 flex justify-end items-center mx-4">
               <button
-                className="bg-orange-500 text-white px-4 py-2 rounded"
                 onClick={() => startEditing(task)}
               >
                 Edit
               </button>
               <button
-                className="bg-red-500 text-white px-4 py-2 rounded"
                 onClick={() => deleteTask(task._id)}
               >
                 Delete

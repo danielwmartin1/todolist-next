@@ -17,7 +17,7 @@ export default function TaskList({
   timeZone
 }) {
   return (
-    <ul className="text-center w-full">
+    <ul>
       {tasks.map((task, index) => (
         <TaskItem
           key={task._id}
