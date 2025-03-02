@@ -124,7 +124,7 @@ export default function Home() {
 
   // Render the main page with header, task form, task list, and footer
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gray-800"> {/* Set background color to grey */}
       <Header /> {/* Render Header component */}
       <main className="flex-grow container mx-auto p-4 flex flex-col items-center justify-center">
         <TaskForm
