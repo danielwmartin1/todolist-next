@@ -15,6 +15,12 @@ export default function TaskItem({
   formatDate, // Function to format date
   timeZone // Time zone string
 }) {
+  const handleDelete = (id) => {
+    if (window.confirm('Are you sure you want to delete this task?')) {
+      deleteTask(id);
+    }
+  };
+
   return (
     <div id="list" key={task._id} className="w-full flex">
       <li id="listItem" className="grid grid-cols-1 sm:grid-cols-3 justify-center text-left items-center">
@@ -74,7 +80,7 @@ export default function TaskItem({
                 Edit
               </button>
               <button
-                onClick={() => deleteTask(task._id)} // Button to delete task
+                onClick={() => handleDelete(task._id)} // Button to delete task with confirmation
                 className="w-24 px-4 py-2 m-2 border rounded-md bg-orange-500 text-white" // Apply consistent styling, width, and color
                 style={{ borderRadius: "6px" }}
               >
