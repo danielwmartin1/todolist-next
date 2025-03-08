@@ -24,15 +24,15 @@ const initialState = {
 function reducer(state, action) {
   switch (action.type) {
     case 'SET_TASKS':
-      return { ...state, tasks: action.payload };
+      return { ...state, tasks: action.payload }; // payload contains the new tasks array
     case 'SET_NEW_TASK':
-      return { ...state, newTask: action.payload };
+      return { ...state, newTask: action.payload }; // payload contains the new task string
     case 'SET_EDITING_TASK_ID':
-      return { ...state, editingTaskId: action.payload };
+      return { ...state, editingTaskId: action.payload }; // payload contains the ID of the task being edited
     case 'SET_EDITING_TASK_TITLE':
-      return { ...state, editingTaskTitle: action.payload };
+      return { ...state, editingTaskTitle: action.payload }; // payload contains the title of the task being edited
     case 'SET_TIME_ZONE':
-      return { ...state, timeZone: action.payload };
+      return { ...state, timeZone: action.payload }; // payload contains the time zone string
     default:
       return state;
   }
