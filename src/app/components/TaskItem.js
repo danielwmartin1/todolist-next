@@ -30,6 +30,7 @@ export default function TaskItem({
               value={editingTaskTitle} // Input field to edit task title
               onChange={(e) => setEditingTaskTitle(e.target.value)}
               onKeyDown={(e) => handleKeyDown(e, () => updateTask(task._id), cancelEditing)}
+              onBlur={cancelEditing} // Handle blur event to cancel editing
               autoFocus
               className="text-black w-full sm:w-1/2 px-4 py-2 m-2 ml-4 border rounded-md" // Increase size, apply consistent styling, and increase left margin
               style={{ borderRadius: "6px" }}
