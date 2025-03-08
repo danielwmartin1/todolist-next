@@ -1,7 +1,7 @@
 "use client";
 
 // TaskForm component definition
-export default function TaskForm({ newTask, setNewTask, addTask, handleKeyDown }) {
+export default function TaskForm({ newTask, setNewTask, addTask, handleKeyDown, children }) {
   return (
     // Container div with flexbox styling for layout
     <div className="pt-0 flex flex-col sm:flex-row items-center justify-center">
@@ -22,6 +22,7 @@ export default function TaskForm({ newTask, setNewTask, addTask, handleKeyDown }
       >
         Add Task
       </button>
+      {children}
     </div>
   );
 }
