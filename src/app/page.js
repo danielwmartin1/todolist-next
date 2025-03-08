@@ -1,13 +1,13 @@
 "use client"; // Indicates that this component uses client-side rendering
 
 import { useReducer } from "react"; // Import React hooks
-import axios from "axios"; // Import axios for making HTTP requests
 import Header from "./Header"; // Import Header component
 import Footer from "./Footer"; // Import Footer component
 import TaskForm from "./components/TaskForm"; // Import TaskForm component
 import TaskList from "./components/TaskList"; // Import TaskList component
 import useFetchTasks from "./hooks/useFetchTasks"; // Import custom hook
-import { addTask, toggleTask, deleteTask, startEditing, cancelEditing, updateTask, formatDate, handleKeyDown } from "./utils/taskFunctions"; // Import task functions
+import { addTask, toggleTask, deleteTask, startEditing, cancelEditing, updateTask } from "./utils/taskFunctions"; // Import task functions
+import { formatDate, handleKeyDown } from "./utils/commonFunctions"; // Import common functions
 
 import './styles.css'; // Import styles
 
