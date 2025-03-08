@@ -12,7 +12,7 @@ export default function TaskForm({ newTask, setNewTask, addTask, handleKeyDown }
         onChange={(e) => setNewTask(e.target.value)} // Update newTask state on change
         onKeyDown={(e) => handleKeyDown(e, addTask, () => setNewTask(""))} // Handle key down event
         autoFocus // Autofocus on input field
-        className="w-full sm:w-1/2 px-4 py-2 m-2 border rounded-md" // Increase size and apply consistent styling
+        className="text-black w-full sm:w-1/2 px-4 py-2 m-2 border rounded-md" // Increase size and apply consistent styling
         style={{ borderRadius: "6px" }}
       />
       <button
