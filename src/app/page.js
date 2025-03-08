@@ -1,6 +1,6 @@
 "use client"; // Indicates that this component uses client-side rendering
 
-import { useState, useEffect } from "react"; // Import React hooks
+import { useReducer, useEffect } from "react"; // Import React hooks
 import axios from "axios"; // Import axios for making HTTP requests
 import Header from "./Header"; // Import Header component
 import Footer from "./Footer"; // Import Footer component
@@ -9,13 +9,36 @@ import TaskList from "./components/TaskList"; // Import TaskList component
 
 import './styles.css'; // Import styles
 
+// Define initial state for the reducer
+const initialState = {
+  tasks: [],
+  newTask: "",
+  editingTaskId: null,
+  editingTaskTitle: "",
+  timeZone: ""
+};
+
+// Define reducer function to handle state updates
+function reducer(state, action) {
+  switch (action.type) {
+    case 'SET_TASKS':
+      return { ...state, tasks: action.payload };
+    case 'SET_NEW_TASK':
+      return { ...state, newTask: action.payload };
+    case 'SET_EDITING_TASK_ID':
+      return { ...state, editingTaskId: action.payload };
+    case 'SET_EDITING_TASK_TITLE':
+      return { ...state, editingTaskTitle: action.payload };
+    case 'SET_TIME_ZONE':
+      return { ...state, timeZone: action.payload };
+    default:
+      return state;
+  }
+}
+
 export default function Home() {
-  // State variables to manage tasks, new task input, editing state, and time zone
-  const [tasks, setTasks] = useState([]); // Array of tasks
-  const [newTask, setNewTask] = useState(""); // New task input
-  const [editingTaskId, setEditingTaskId] = useState(null); // ID of the task being edited
-  const [editingTaskTitle, setEditingTaskTitle] = useState(""); // Title of the task being edited
-  const [timeZone, setTimeZone] = useState(""); // User's time zone
+  // Use useReducer hook to manage state
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   // Fetch tasks from the server
   const fetchTasks = async () => {
@@ -26,7 +49,7 @@ export default function Home() {
         throw new Error("Fetched tasks is not an array"); // Throw error if tasks is not an array
       }
       const validTasks = fetchedTasks.filter(task => !isNaN(new Date(task.createdAt).getTime())); // Filter valid tasks
-      setTasks(validTasks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))); // Sort tasks by creation date
+      dispatch({ type: 'SET_TASKS', payload: validTasks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) }); // Sort tasks by creation date
     } catch (error) {
       console.error("Failed to fetch tasks:", error); // Log error if fetching tasks fails
     }
@@ -35,16 +58,16 @@ export default function Home() {
   // Fetch tasks on component mount
   useEffect(() => {
     fetchTasks(); // Call fetchTasks when component mounts
-    setTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone); // Set the client's time zone
+    dispatch({ type: 'SET_TIME_ZONE', payload: Intl.DateTimeFormat().resolvedOptions().timeZone }); // Set the client's time zone
   }, []);
 
   // Add a new task
   const addTask = async () => {
-    if (!newTask) return; // Return if newTask is empty
+    if (!state.newTask) return; // Return if newTask is empty
     try {
-      await axios.post("/api/tasks", { title: newTask }); // Make a POST request to add a new task
+      await axios.post("/api/tasks", { title: state.newTask }); // Make a POST request to add a new task
       fetchTasks(); // Fetch tasks after adding a new task
-      setNewTask(""); // Clear new task input
+      dispatch({ type: 'SET_NEW_TASK', payload: "" }); // Clear new task input
     } catch (error) {
       console.error("Failed to add task:", error); // Log error if adding task fails
     }
@@ -56,7 +79,7 @@ export default function Home() {
       const response = await axios.patch(`/api/tasks/${id}`, { completed }); // Make a PATCH request to toggle task completion status
       fetchTasks(); // Fetch tasks after toggling task completion status
       if (response.data.task) {
-        setTasks(tasks.map(task => task._id === id ? response.data.task : task)); // Update tasks state
+        dispatch({ type: 'SET_TASKS', payload: state.tasks.map(task => task._id === id ? response.data.task : task) }); // Update tasks state
       }
     } catch (error) {
       console.error("Failed to toggle task:", error); // Log error if toggling task fails
@@ -68,7 +91,7 @@ export default function Home() {
     try {
       await axios.delete(`/api/tasks/${id}`); // Make a DELETE request to delete a task
       fetchTasks(); // Fetch tasks after deleting a task
-      setTasks(tasks.filter(task => task._id !== id)); // Update tasks state
+      dispatch({ type: 'SET_TASKS', payload: state.tasks.filter(task => task._id !== id) }); // Update tasks state
     } catch (error) {
       console.error("Failed to delete task:", error); // Log error if deleting task fails
     }
@@ -76,24 +99,24 @@ export default function Home() {
 
   // Start editing a task
   const startEditing = (task) => {
-    setEditingTaskId(task._id); // Set the ID of the task being edited
-    setEditingTaskTitle(task.title); // Set the title of the task being edited
+    dispatch({ type: 'SET_EDITING_TASK_ID', payload: task._id }); // Set the ID of the task being edited
+    dispatch({ type: 'SET_EDITING_TASK_TITLE', payload: task.title }); // Set the title of the task being edited
   };
 
   // Cancel editing a task
   const cancelEditing = () => {
-    setEditingTaskId(null); // Clear the ID of the task being edited
-    setEditingTaskTitle(""); // Clear the title of the task being edited
+    dispatch({ type: 'SET_EDITING_TASK_ID', payload: null }); // Clear the ID of the task being edited
+    dispatch({ type: 'SET_EDITING_TASK_TITLE', payload: "" }); // Clear the title of the task being edited
   };
 
   // Update a task
   const updateTask = async (id) => {
-    if (editingTaskTitle === tasks.find(task => task._id === id).title) {
+    if (state.editingTaskTitle === state.tasks.find(task => task._id === id).title) {
       cancelEditing(); // Cancel editing if the title hasn't changed
       return;
     }
     try {
-      await axios.put(`/api/tasks/${id}`, { title: editingTaskTitle }); // Make a PUT request to update the task
+      await axios.put(`/api/tasks/${id}`, { title: state.editingTaskTitle }); // Make a PUT request to update the task
       fetchTasks(); // Fetch tasks after updating the task
       cancelEditing(); // Cancel editing
     } catch (error) {
@@ -104,7 +127,7 @@ export default function Home() {
   // Format date according to the time zone
   const formatDate = (date) => {
     return new Intl.DateTimeFormat('en-US', {
-      timeZone,
+      timeZone: state.timeZone,
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -130,17 +153,17 @@ export default function Home() {
       <Header /> {/* Render Header component */}
       <main className="flex-grow container mx-auto p-4 flex flex-col items-center justify-center">
         <TaskForm
-          newTask={newTask} // Pass newTask state to TaskForm
-          setNewTask={setNewTask} // Pass setNewTask function to TaskForm
+          newTask={state.newTask} // Pass newTask state to TaskForm
+          setNewTask={(value) => dispatch({ type: 'SET_NEW_TASK', payload: value })} // Pass setNewTask function to TaskForm
           addTask={addTask} // Pass addTask function to TaskForm
           handleKeyDown={handleKeyDown} // Pass handleKeyDown function to TaskForm
         />
         <hr id="hr" className="my-4" /> {/* Horizontal rule */}
         <TaskList
-          tasks={tasks} // Pass tasks state to TaskList
-          editingTaskId={editingTaskId} // Pass editingTaskId state to TaskList
-          editingTaskTitle={editingTaskTitle} // Pass editingTaskTitle state to TaskList
-          setEditingTaskTitle={setEditingTaskTitle} // Pass setEditingTaskTitle function to TaskList
+          tasks={state.tasks} // Pass tasks state to TaskList
+          editingTaskId={state.editingTaskId} // Pass editingTaskId state to TaskList
+          editingTaskTitle={state.editingTaskTitle} // Pass editingTaskTitle state to TaskList
+          setEditingTaskTitle={(value) => dispatch({ type: 'SET_EDITING_TASK_TITLE', payload: value })} // Pass setEditingTaskTitle function to TaskList
           handleKeyDown={handleKeyDown} // Pass handleKeyDown function to TaskList
           toggleTask={toggleTask} // Pass toggleTask function to TaskList
           startEditing={startEditing} // Pass startEditing function to TaskList
@@ -148,7 +171,7 @@ export default function Home() {
           updateTask={updateTask} // Pass updateTask function to TaskList
           deleteTask={deleteTask} // Pass deleteTask function to TaskList
           formatDate={formatDate} // Pass formatDate function to TaskList
-          timeZone={timeZone} // Pass timeZone state to TaskList
+          timeZone={state.timeZone} // Pass timeZone state to TaskList
         />
       </main>
       <Footer /> {/* Render Footer component */}
