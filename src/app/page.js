@@ -1,11 +1,12 @@
 "use client"; // Indicates that this component uses client-side rendering
 
-import { useReducer, useEffect } from "react"; // Import React hooks
+import { useReducer } from "react"; // Import React hooks
 import axios from "axios"; // Import axios for making HTTP requests
 import Header from "./Header"; // Import Header component
 import Footer from "./Footer"; // Import Footer component
 import TaskForm from "./components/TaskForm"; // Import TaskForm component
 import TaskList from "./components/TaskList"; // Import TaskList component
+import useFetchTasks from "./hooks/useFetchTasks"; // Import custom hook
 
 import './styles.css'; // Import styles
 
@@ -40,26 +41,8 @@ export default function Home() {
   // Use useReducer hook to manage state
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // Fetch tasks from the server
-  const fetchTasks = async () => {
-    try {
-      const response = await axios.get("/api/tasks"); // Make a GET request to fetch tasks
-      const fetchedTasks = response.data.tasks || []; // Get tasks from response
-      if (!Array.isArray(fetchedTasks)) {
-        throw new Error("Fetched tasks is not an array"); // Throw error if tasks is not an array
-      }
-      const validTasks = fetchedTasks.filter(task => !isNaN(new Date(task.createdAt).getTime())); // Filter valid tasks
-      dispatch({ type: 'SET_TASKS', payload: validTasks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) }); // Sort tasks by creation date
-    } catch (error) {
-      console.error("Failed to fetch tasks:", error); // Log error if fetching tasks fails
-    }
-  };
-
-  // Fetch tasks on component mount
-  useEffect(() => {
-    fetchTasks(); // Call fetchTasks when component mounts
-    dispatch({ type: 'SET_TIME_ZONE', payload: Intl.DateTimeFormat().resolvedOptions().timeZone }); // Set the client's time zone
-  }, []);
+  // Use custom hook to fetch tasks
+  const fetchTasks = useFetchTasks(dispatch);
 
   // Add a new task
   const addTask = async () => {

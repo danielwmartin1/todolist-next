@@ -1,5 +1,8 @@
 "use client";
 
+import Input from "./Input"; // Import reusable Input component
+import Button from "./Button"; // Import reusable Button component
+
 // TaskItem component to render individual task items
 export default function TaskItem({
   task, // Task object containing task details
@@ -31,15 +34,14 @@ export default function TaskItem({
             onChange={() => toggleTask(task._id, !task.completed)}
           />
           {editingTaskId === task._id ? (
-            <input
+            <Input
               type="text"
               value={editingTaskTitle} // Input field to edit task title
               onChange={(e) => setEditingTaskTitle(e.target.value)}
               onKeyDown={(e) => handleKeyDown(e, () => updateTask(task._id), cancelEditing)}
               onBlur={cancelEditing} // Handle blur event to cancel editing
               autoFocus
-              className="text-black w-full sm:w-1/2 px-4 py-2 m-2 ml-4 border rounded-md" // Increase size, apply consistent styling, and increase left margin
-              style={{ borderRadius: "6px" }}
+              className="ml-4" // Increase left margin
             />
           ) : (
             <span className={`text-lg ${task.completed ? "line-through" : ""} ml-4`}>
@@ -55,37 +57,33 @@ export default function TaskItem({
         <div className="flex justify-end items-center space-x-2">
           {editingTaskId === task._id ? (
             <div className="space-x-2 flex justify-end items-center">
-              <button
+              <Button
                 onClick={() => updateTask(task._id)} // Button to save edited task
-                className="w-24 px-4 py-2 m-2 border rounded-md bg-green-500 text-white" // Apply consistent styling, width, and color
-                style={{ borderRadius: "6px" }}
+                className="bg-green-500 text-white" // Apply consistent styling, width, and color
               >
                 Save
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={cancelEditing} // Button to cancel editing
-                className="w-24 px-4 py-2 m-2 border rounded-md bg-red-500 text-white" // Apply consistent styling, width, and color
-                style={{ borderRadius: "6px" }}
+                className="bg-red-500 text-white" // Apply consistent styling, width, and color
               >
                 Cancel
-              </button>
+              </Button>
             </div>
           ) : (
             <div className="space-x-2 flex justify-end items-center mx-4">
-              <button
+              <Button
                 onClick={() => startEditing(task)} // Button to start editing task
-                className="w-24 px-4 py-2 m-2 border rounded-md bg-purple-500 text-white" // Apply consistent styling, width, and color
-                style={{ borderRadius: "6px" }}
+                className="bg-purple-500 text-white" // Apply consistent styling, width, and color
               >
                 Edit
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => handleDelete(task._id)} // Button to delete task with confirmation
-                className="w-24 px-4 py-2 m-2 border rounded-md bg-orange-500 text-white" // Apply consistent styling, width, and color
-                style={{ borderRadius: "6px" }}
+                className="bg-orange-500 text-white" // Apply consistent styling, width, and color
               >
                 Delete
-              </button>
+              </Button>
             </div>
           )}
         </div>
