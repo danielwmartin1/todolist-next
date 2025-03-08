@@ -65,4 +65,8 @@ body {
     align-items: flex-start !important;       
     justify-content: center !important;   
   }
+
+  #listItem > .text-sm {
+    margin: 1rem 0rem;
+  }
 }
