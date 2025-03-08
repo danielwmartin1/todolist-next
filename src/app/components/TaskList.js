@@ -30,10 +30,7 @@ export default function TaskList({
             console.log('setEditingTaskTitle called with:', title);
             setEditingTaskTitle(title);
           }} // Function to set the title of the task being edited
-          handleKeyDown={(event) => {
-            console.log('handleKeyDown called with:', event);
-            handleKeyDown(event);
-          }} // Function to handle key down events
+          handleKeyDown={handleKeyDown} // Function to handle key down events
           toggleTask={(id) => {
             console.log('toggleTask called with:', id);
             toggleTask(id);
@@ -46,10 +43,10 @@ export default function TaskList({
             console.log('cancelEditing called');
             cancelEditing();
           }} // Function to cancel editing a task
-          updateTask={(id, title) => {
-            console.log('updateTask called with:', id, title);
-            updateTask(id, title);
-            console.log('Task updated with new title:', title);
+          updateTask={(id) => {
+            console.log('updateTask called with:', editingTaskTitle);
+            updateTask(id, editingTaskTitle);
+            console.log('Task updated with new title:', editingTaskTitle);
           }} // Function to update a task
           deleteTask={(id) => {
             console.log('deleteTask called with:', id);
