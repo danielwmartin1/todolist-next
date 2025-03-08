@@ -19,7 +19,7 @@ export default function TaskForm({ newTask, setNewTask, addTask, handleKeyDown }
         style={{ minWidth: "50%", borderRadius: "6px" }} // Button with minimum width and border-radius styling
         className="w-24 px-4 py-2 m-2 border rounded-md bg-blue-500 text-white" // Apply consistent styling, width, and color
         onClick={addTask} // Add task on button click
-      >a
+      >
         Add Task
       </button>
     </div>
