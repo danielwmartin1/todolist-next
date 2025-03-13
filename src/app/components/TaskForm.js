@@ -7,7 +7,7 @@ import Button from "./Button"; // Import reusable Button component
 export default function TaskForm({ newTask, setNewTask, addTask, handleKeyDown, children }) {
   return (
     // Container div with flexbox styling for layout
-    <div className="pt-0 flex flex-col sm:flex-row items-center justify-center">
+    <div className="p-4 flex flex-col sm:flex-row items-center justify-center">
       <Input
         type="text" // Input field for new task
         placeholder="New Task" // Placeholder text

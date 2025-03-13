@@ -52,9 +52,9 @@ export default function Home() {
         <main className="flex-grow container mx-auto p-4 flex flex-col items-center justify-center" /*style={{backgroundImage: 'url(/blue.jpg)', backgroundSize: '100vw 100vh'}}*/>
           <TaskForm
             newTask={state.newTask} // Pass newTask state to TaskForm
-          setNewTask={(value) => dispatch({ type: 'SET_NEW_TASK', payload: value })} // Pass setNewTask function to TaskForm
-          addTask={() => addTask(state, dispatch, fetchTasks)} // Pass addTask function to TaskForm
-          handleKeyDown={(e) => handleKeyDown(e, () => addTask(state, dispatch, fetchTasks))} // Pass handleKeyDown function to TaskForm
+            setNewTask={(value) => dispatch({ type: 'SET_NEW_TASK', payload: value })} // Pass setNewTask function to TaskForm
+            addTask={() => addTask(state, dispatch, fetchTasks)} // Pass addTask function to TaskForm
+            handleKeyDown={(e) => handleKeyDown(e, () => addTask(state, dispatch, fetchTasks))} // Pass handleKeyDown function to TaskForm
         />
         <hr id="hr" className="my-4" /> {/* Horizontal rule */}
         <TaskList
